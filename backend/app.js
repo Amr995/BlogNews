@@ -2,6 +2,7 @@ const express = require("express");
 const connectToDb = require("./config/connectToDb");
 require("dotenv").config();
 
+
 // Connection To Db
 connectToDb();
 
