@@ -108,3 +108,23 @@ module.exports.updateUserProfileCtrl = asyncHandler(async (req, res) => {
 
      fs.unlinkSync(imagePath);
  });
+
+ /**______________________________________________________
+ * @desc Delete User Profile (Account)
+ * @route /api/auth/profile/:id
+ * @method DELETE
+ * @access private (only admin of user himself)
+ ______________________________________________________*/
+
+module.exports.deleteUserProfileCtrl = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if(!user) {
+        return res.status(404).json({ message: "user not found"});
+    }
+
+    await cloudinaryRemoveImage(user.profilePhoto.publicId);
+
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: "your profile has been deleted" });
+});

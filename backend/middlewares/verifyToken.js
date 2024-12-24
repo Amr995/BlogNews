@@ -43,8 +43,20 @@ function verifyTokenAndOnlyUser(req, res, next){
   })
 }
 
+// Verify Token & Authorization
+function verifyTokenAndAuthorization(req, res, next){
+  verifyToken(req, res, () => {
+      if(req.user.id == req.params.id || req.user.isAdmin) {
+          next();
+      } else {
+          return res.status(403).json({message: "not allowd, only User Himself"});
+      }
+  })
+}
+
 module.exports = {
   verifyToken,
   verifyTokenAndAdmin,
-  verifyTokenAndOnlyUser
+  verifyTokenAndOnlyUser,
+  verifyTokenAndAuthorization,
 };
