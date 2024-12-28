@@ -38,5 +38,60 @@ module.exports.createPostCtrl = asynHandler(async (req, res) => {
     res.status(202).json(post);
 
     fs.unlinkSync(imagePath);
-
 });
+
+/**______________________________________________________
+ * @desc Get All Post
+ * @route /api/posts
+ * @method GET
+ * @access public
+ ______________________________________________________*/
+ module.exports.getAllPostsCtrl= asynHandler(async (req, res) => {
+    const POST_PER_PAGE = 3;
+    const { pageNumber, category } = req.query;
+    let posts;
+
+    if(pageNumber) {
+        posts = await Post.find()
+        .skip((pageNumber - 1) * POST_PER_PAGE)
+        .limit(POST_PER_PAGE)
+        .sort({ createdAt: -1 })
+        .populate("user",["-password"]);
+    } else if (category) {
+        posts = await Post.find({ category })
+        .sort({ createdAt: -1 })
+        .populate("user",["-password"]);
+    } else {
+        posts = await Post.file()
+        .sort({ createdAt: -1 })
+        .populate("user",["-password"]);
+    }
+
+    res.status(200).json(posts);
+ });
+
+ /**______________________________________________________
+ * @desc Get Single Post
+ * @route /api/posts/:id
+ * @method GET
+ * @access public
+ ______________________________________________________*/
+ module.exports.getSinglePostCtrl= asynHandler(async (req, res) => {
+    const post = await Post.findById(req.params.id).populate("user", ["-password"]);
+    if(!post) {
+        return res.status(404).json({ message: 'post not found' });
+    }
+
+    res.status(200).json(posts);
+ });
+
+  /**______________________________________________________
+ * @desc Get Posts Count
+ * @route /api/posts/count
+ * @method GET
+ * @access public
+ ______________________________________________________*/
+ module.exports.getPostCountCtrl= asynHandler(async (req, res) => {
+    const post = await Post.count();
+    res.status(200).json(count);
+ });
