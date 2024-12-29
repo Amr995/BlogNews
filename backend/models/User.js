@@ -47,14 +47,25 @@ const UserSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
-// Generate Auth Token
-UserSchema.methods.generateAuthToken = function() {
-    return jwt.sign({id: this._id, isAdmin: this.isAdmin}, process.env.JWT_SECRET);
-}
+//Populate Posts That Belongs To This User When he/she Get his/her Profile
+UserSchema.virtual("posts", {
+  ref: "Post",
+  foreignField: "user",
+  localField: "_id",
+});
 
+// Generate Auth Token
+UserSchema.methods.generateAuthToken = function () {
+  return jwt.sign(
+    { id: this._id, isAdmin: this.isAdmin },
+    process.env.JWT_SECRET
+  );
+};
 
 //User Model
 const User = mongoose.model("User", UserSchema);
@@ -84,7 +95,6 @@ function validateUpdateUser(obj) {
     username: Joi.string().trim().min(2).max(100),
     password: Joi.string().trim().min(8),
     boi: Joi.string(),
-
   });
   return schema.validate(obj);
 }
@@ -93,5 +103,5 @@ module.exports = {
   User,
   validateRegisterUser,
   validateLoginUser,
-  validateUpdateUser
+  validateUpdateUser,
 };
