@@ -176,42 +176,82 @@ module.exports.updatePostCtrl = asynHandler(async (req, res) => {
  * @access private (only owner of the post)
  ______________________________________________________*/
 
- module.exports.updatePostImageCtrl = asynHandler(async (req, res) => {
-  
-    if (!req.file) {
-      return res.status(400).json({ message: "no image provided" });
-    }
-  
-    const post = await Post.findById(req.params.id);
-    if (!post) {
-      return res.status(404).json({ message: "post not found" });
-    }
-  
-    if (req.user.id !== post.user.toString()) {
-      return res
-        .status(403)
-        .json({ message: "access denied, you are not allowed" });
-    }
-  
-    await cloudinaryRemoveImage(post.image.publicId);
+module.exports.updatePostImageCtrl = asynHandler(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "no image provided" });
+  }
 
-    const imagePath = path.join(__dirname, `../images/${req.file.filename}`);
-    const result = await cloudinaryUploadImage(imagePath);
+  const post = await Post.findById(req.params.id);
+  if (!post) {
+    return res.status(404).json({ message: "post not found" });
+  }
 
-    const updatePost = await Post.findByIdAndUpdate(
-        req.params.id,
-        {
-          $set: {
-            image: {
-                url: result.secure_url,
-                publicId: result.public_id,
-            }
-          }
+  if (req.user.id !== post.user.toString()) {
+    return res
+      .status(403)
+      .json({ message: "access denied, you are not allowed" });
+  }
+
+  await cloudinaryRemoveImage(post.image.publicId);
+
+  const imagePath = path.join(__dirname, `../images/${req.file.filename}`);
+  const result = await cloudinaryUploadImage(imagePath);
+
+  const updatePost = await Post.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        image: {
+          url: result.secure_url,
+          publicId: result.public_id,
         },
-        { new: true }
-      ).populate("user", ["-password"]);
-    
-    res.status(200).json(updatePost);
+      },
+    },
+    { new: true }
+  ).populate("user", ["-password"]);
 
-    fs.unlinkSync(imagePath);
-  });
+  res.status(200).json(updatePost);
+
+  fs.unlinkSync(imagePath);
+});
+
+/**______________________________________________________
+ * @desc Toggle Like
+ * @route /api/posts/like/:id
+ * @method PUT
+ * @access private (only logged in user)
+ ______________________________________________________*/
+
+module.exports.toggleLikeCtrl = asynHandler(async (req, res) => {
+  const loggedInUser = req.user.id;
+  const { id: postId } = req.params;
+
+  let post = await Post.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "post not found" });
+  }
+
+  const isPostAlreadyLiked = post.likes.find(
+    (user) => user.toString() === loggedInUser
+  );
+
+  if (isPostAlreeadyLiked) {
+    post = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $pull: { likes: loggedInUser },
+      },
+      { new: true }
+    );
+  } else {
+    post = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $push: { likes: loggedInUser },
+      },
+      { new: true }
+    );
+  }
+
+  res.status(200).json(post);
+});
