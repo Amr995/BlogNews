@@ -5,6 +5,8 @@ const {
   getSinglePostCtrl,
   getPostCountCtrl,
   deletePostCtrl,
+  updatePostCtrl,
+  updatePostImageCtrl,
 } = require("../controllers/postsController");
 const photoUpload = require("../middlewares/photoUpload");
 const { verifyToken } = require("../middlewares/verifyToken");
@@ -23,6 +25,13 @@ router.route("/count").get(getPostCountCtrl);
 router
   .route("/:id")
   .get(validateObjectId, getSinglePostCtrl)
-  .delete(validateObjectId, verifyToken, deletePostCtrl);
+  .delete(validateObjectId, verifyToken, deletePostCtrl)
+  .put(validateObjectId, verifyToken, updatePostCtrl);
+
+
+// /api/posts/update-image/:id
+router
+.route("/update-image/:id")
+.put(validateObjectId, verifyToken, photoUpload.single("image"), updatePostImageCtrl);
 
 module.exports = router;
