@@ -10,6 +10,7 @@ const {
   cloudinaryUploadImage,
   cloudinaryRemoveImage,
 } = require("../utils/cloudinary");
+const { Comment } = require("../models/Comment");
 
 /**______________________________________________________
  * @desc Create New Post
@@ -84,8 +85,8 @@ module.exports.getAllPostsCtrl = asynHandler(async (req, res) => {
  ______________________________________________________*/
 module.exports.getSinglePostCtrl = asynHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
-  .populate("user", ["-password"])
-  .populate("comments");
+    .populate("user", ["-password"])
+    .populate("comments");
   if (!post) {
     return res.status(404).json({ message: "post not found" });
   }
@@ -121,6 +122,8 @@ module.exports.deletePostCtrl = asynHandler(async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
     await cloudinaryRemoveImage(post.image.publicId);
 
+    await Comment.deleteMany({ postId: post._id });
+
     res
       .status(200)
       .json({ message: "post has been delete successfully", postId: post._id });
@@ -135,7 +138,6 @@ module.exports.deletePostCtrl = asynHandler(async (req, res) => {
  * @method PUT
  * @access private (only owner of the post)
  ______________________________________________________*/
-
 module.exports.updatePostCtrl = asynHandler(async (req, res) => {
   const { error } = validateUpdatePost(req.body);
 
@@ -175,7 +177,6 @@ module.exports.updatePostCtrl = asynHandler(async (req, res) => {
  * @method PUT
  * @access private (only owner of the post)
  ______________________________________________________*/
-
 module.exports.updatePostImageCtrl = asynHandler(async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "no image provided" });
@@ -221,7 +222,6 @@ module.exports.updatePostImageCtrl = asynHandler(async (req, res) => {
  * @method PUT
  * @access private (only logged in user)
  ______________________________________________________*/
-
 module.exports.toggleLikeCtrl = asynHandler(async (req, res) => {
   const loggedInUser = req.user.id;
   const { id: postId } = req.params;

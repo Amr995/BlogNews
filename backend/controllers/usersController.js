@@ -3,7 +3,13 @@ const { User, validateUpdateUser } = require("../models/User");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const fs = require("fs");
-const { cloudinaryUploadImage, cloudinaryRemoveImage } = require("../utils/cloudinary");
+const {
+  cloudinaryUploadImage,
+  cloudinaryRemoveImage,
+  cloudinaryRemoveMultipleImage
+} = require("../utils/cloudinary");
+const { Comment } = require("../models/Comment");
+const { Post } = require("../models/Post");
 
 /**______________________________________________________
  * @desc Get All Users Profile
@@ -23,7 +29,9 @@ module.exports.getAllUsersCtrl = asyncHandler(async (req, res) => {
  * @access public
  ______________________________________________________*/
 module.exports.getUserProfileCtrl = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select("-password").populate("posts");
+  const user = await User.findById(req.params.id)
+    .select("-password")
+    .populate("posts");
   if (!user) {
     return res.status(404).json({ message: "user not found" });
   }
@@ -69,62 +77,72 @@ module.exports.updateUserProfileCtrl = asyncHandler(async (req, res) => {
  * @method GET
  * @access private (only admin)
  ______________________________________________________*/
- module.exports.getUsersCountCtrl = asyncHandler(async (req, res) => {
-    const count = await User.count();
-    res.status(200).json(count);
-  });
+module.exports.getUsersCountCtrl = asyncHandler(async (req, res) => {
+  const count = await User.count();
+  res.status(200).json(count);
+});
 
-  /**______________________________________________________
+/**______________________________________________________
  * @desc Profile Photo Uplode
  * @route /api/auth/profile/profile-photo-upload
  * @method POST
  * @access private (only logged in user)
  ______________________________________________________*/
- module.exports.profilePhotoUploadCtrl = asyncHandler(async (req, res) => {
-    if(!req.file) {
-        return res.status(400).json({ message: 'no file provided' });
-    }
+module.exports.profilePhotoUploadCtrl = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "no file provided" });
+  }
 
-    const imagePath = path.join(__dirname, `../images/${req.file.filename}`);
+  const imagePath = path.join(__dirname, `../images/${req.file.filename}`);
 
-    const result = await cloudinaryUploadImage(imagePath);
+  const result = await cloudinaryUploadImage(imagePath);
 
-    const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id);
 
-    if(user.profilePhoto.publicId !== null) {
-        await cloudinaryRemoveImage(user.profilePhoto.publicId);
-    }
+  if (user.profilePhoto.publicId !== null) {
+    await cloudinaryRemoveImage(user.profilePhoto.publicId);
+  }
 
-    user.profilePhoto = {
-        url: result.secure_url,
-        publicId: result.public_id,
-    }
-    await user.save();
+  user.profilePhoto = {
+    url: result.secure_url,
+    publicId: result.public_id,
+  };
+  await user.save();
 
-    res.status(200).json({ 
-        message: "your profile photo uploaded successfully",
-        profilePhoto: { url: result.secure_url, publicId: result.public_id }
-     });
+  res.status(200).json({
+    message: "your profile photo uploaded successfully",
+    profilePhoto: { url: result.secure_url, publicId: result.public_id },
+  });
 
-     fs.unlinkSync(imagePath);
- });
+  fs.unlinkSync(imagePath);
+});
 
- /**______________________________________________________
+/**______________________________________________________
  * @desc Delete User Profile (Account)
  * @route /api/auth/profile/:id
  * @method DELETE
  * @access private (only admin of user himself)
  ______________________________________________________*/
-
 module.exports.deleteUserProfileCtrl = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id);
-    if(!user) {
-        return res.status(404).json({ message: "user not found"});
-    }
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(404).json({ message: "user not found" });
+  }
 
-    await cloudinaryRemoveImage(user.profilePhoto.publicId);
+  const posts = await Post.find({ user: user._id});
 
-    await User.findByIdAndDelete(req.params.id);
+  const publicIds = posts?.map((post) => post.image.publicId);
 
-    res.status(200).json({ message: "your profile has been deleted" });
+  if(publicIds?.length > 0) {
+    await cloudinaryRemoveMultipleImage(publicIds);
+  }
+
+  await cloudinaryRemoveImage(user.profilePhoto.publicId);
+
+  await Post.deleteMany({ user: user._id });
+  await Comment.deleteMany({ user: user._id });
+
+  await User.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ message: "your profile has been deleted" });
 });
