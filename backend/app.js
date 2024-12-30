@@ -17,6 +17,7 @@ app.use("/api/auth", require("./routers/authRoute"));
 app.use("/api/users", require("./routers/usersRoute"));
 app.use("/api/posts", require("./routers/postsRoute"));
 app.use("/api/comments", require("./routers/commentsRoute"));
+app.use("/api/categories", require("./routers/categoriesRoute"));
 
 
 // Running The Server

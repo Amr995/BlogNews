@@ -12,7 +12,6 @@ const { User } = require("../models/User");
  * @method POST
  * @access private (only loged in user)
  ______________________________________________________*/
-
 module.exports.createCommentCtrl = asynHandler(async (req, res) => {
   const { error } = validateCreateComment(req.body);
   if (error) {
