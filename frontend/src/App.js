@@ -15,6 +15,8 @@ import UsersTable from "./pages/admin/UsersTable";
 import PostsTable from "./pages/admin/PostsTable";
 import CategoriesTable from "./pages/admin/CategoriesTable";
 import CommentsTable from "./pages/admin/CommentsTable";
+import ForgotPassword from "./pages/forms/ForgotPassword";
+import ResetPassword from "./pages/forms/ResetPassword";
 
 function App() {
   return (
@@ -22,10 +24,11 @@ function App() {
       <ToastContainer theme="colored" position="top-center" />
       <Header />
       <Routes>
-        
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route path="/profile/:id" element={<Profile />} />
 
         <Route path="posts">
@@ -41,7 +44,6 @@ function App() {
           <Route path="posts-table" element={<PostsTable />} />
           <Route path="categories-table" element={<CategoriesTable />} />
           <Route path="comments-table" element={<CommentsTable />} />
-
         </Route>
       </Routes>
       <Footer />
