@@ -1,5 +1,5 @@
 const Footer = () => {
-  return <footer style={styles}>Copyright 2022 &copy;</footer>;
+  return <footer style={styles}>Copyright 2025 &copy;</footer>;
 };
 
 const styles = {
