@@ -17,6 +17,7 @@ import CategoriesTable from "./pages/admin/CategoriesTable";
 import CommentsTable from "./pages/admin/CommentsTable";
 import ForgotPassword from "./pages/forms/ForgotPassword";
 import ResetPassword from "./pages/forms/ResetPassword";
+import NotFound from "./pages/not-found/NotFound";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="categories-table" element={<CategoriesTable />} />
           <Route path="comments-table" element={<CommentsTable />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </BrowserRouter>
