@@ -11,7 +11,6 @@ export function loginUser(user) {
             localStorage.setItem("userInfo", JSON.stringify(data));
         } catch (error) {
             toast.error(error.response.data.message);
-            console.log(error);
         }
     }
 }
