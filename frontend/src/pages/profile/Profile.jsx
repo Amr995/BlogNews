@@ -8,7 +8,7 @@ import UpdateProfileModal from "./UpdateProfileModal";
 import { useParams } from "react-router-dom";
 import swal from "sweetalert";
 import UpdateProfileModal from "./UpdateProfileModal";
-import { getUserProfile } from "../../redux/apiCalls/profileApiCall";
+import { getUserProfile, uploadProfilePhoto } from "../../redux/apiCalls/profileApiCall";
 
 
 const Profile = () => {
@@ -27,9 +27,12 @@ const Profile = () => {
   // Form Submit Handler
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    if(!file) return toast.warning("there is no file!");
+    if (!file) return toast.warning("there is no file!");
 
-    console.log("image uploaded");
+    const formData = new FormData();
+    formData.append("image", file);
+
+    dispatch(uploadProfilePhoto(formData));
   }
 
   // Delete Account Handler
@@ -57,12 +60,12 @@ const Profile = () => {
         <div className="profile-image-wrapper">
           <img src={file ? URL.createObjectURL(file) : profile?.profilePhoto.url} />
           <form onSubmit={formSubmitHandler}>
-          <abbr title="choose profile photo">
-            <label
-              htmlFor="file"
-              className="bi bi-camera-fill upload-profile-photo-icon"
-            ></label>
-          </abbr>
+            <abbr title="choose profile photo">
+              <label
+                htmlFor="file"
+                className="bi bi-camera-fill upload-profile-photo-icon"
+              ></label>
+            </abbr>
             <input
               type="file"
               name="file"

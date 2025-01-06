@@ -4,18 +4,21 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         user: localStorage.getItem("userInfo") ?
-        JSON.parse(localStorage.getItem("userInfo")) : null,
+            JSON.parse(localStorage.getItem("userInfo")) : null,
         registerMessage: null,
     },
     reducers: {
-        login(state,action) {
+        login(state, action) {
             state.user = action.payload;
         },
         logout(state) {
             state.user = null;
         },
-        register(state,action){
+        register(state, action) {
             state.registerMessage = action.payload;
+        },
+        setUserPhoto(state, action) {
+            state.user.profilePhoto = action.payload;
         }
     }
 });
