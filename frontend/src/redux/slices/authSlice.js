@@ -19,7 +19,11 @@ const authSlice = createSlice({
         },
         setUserPhoto(state, action) {
             state.user.profilePhoto = action.payload;
+        },
+        setUsername(state, action) {
+            state.user.username = action.payload;
         }
+
     }
 });
 
