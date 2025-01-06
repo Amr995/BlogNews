@@ -20,3 +20,11 @@
 }
 
 .category-not-found span {
+    color: var(--red-color);
+}
+
+.category-not-found-link {
+    font-size: 21px;
+    text-decoration: underline;
+    font-weight: 500;
+}
