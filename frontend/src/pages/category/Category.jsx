@@ -1,21 +1,25 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import "./category.css";
 import PostList from "../../components/posts/PostList";
 import { posts } from "../../dummyData";
-import "./category.css";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Category = () => {
-    const { category } = useParams();
+  const dispatch = useDispatch();
+  const { postsCount, posts } = useSelector(state => state.post);
 
-    useEffect(() => {
-      window.scrollTo(0,0);
-    }, []);
+  const { category } = useParams();
 
-    return ( 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
     <div className="category">
-        <h1 className="category-title">Posts based on {category}</h1>
-        <PostList posts={posts} />
-    </div> );
+      <h1 className="category-title">Posts based on {category}</h1>
+      <PostList posts={posts} />
+    </div>);
 }
- 
+
 export default Category;
