@@ -1,8 +1,15 @@
 import "./create-post.css";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createPost } from "../../redux/apiCalls/postApiCall";
+import {  } from "react-loader-spinner"
 
 const CreatePost = () => {
+  const dispatch = useDispatch();
+  const { loading, isPostCreated } = useSelector(state => state.post); 
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -22,8 +29,15 @@ const CreatePost = () => {
     formData.append("description", description);
     formData.append("category", category);
 
-    console.log({ title, category, description });
+    dispatch(createPost(formData));
   };
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(isPostCreated) {
+      navigate("/");
+    }
+  }, [isPostCreated, navigate]);
 
   return (
     <section className="create-post">
@@ -62,6 +76,9 @@ const CreatePost = () => {
           onChange={(e) => setFile(e.target.files[0])}
         />
         <button type="submit" className="create-post-btn">
+          {
+            loading ? "Loading..." : "Create"
+          }
           Create
         </button>
       </form>
