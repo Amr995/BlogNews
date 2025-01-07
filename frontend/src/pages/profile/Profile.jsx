@@ -1,14 +1,13 @@
 import "./profile.css";
 import PostList from "../../components/posts/PostList";
 import { posts } from "../../dummyData";
-import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import UpdateProfileModal from "./UpdateProfileModal";
+import { getUserProfile } from "../../redux/apiCalls/profileApiCall";
 import { useParams } from "react-router-dom";
 import swal from "sweetalert";
 import UpdateProfileModal from "./UpdateProfileModal";
-import { getUserProfile } from "../../redux/apiCalls/profileApiCall";
 
 
 const Profile = () => {
