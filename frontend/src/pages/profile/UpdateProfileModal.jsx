@@ -1,15 +1,12 @@
-import "./update-profile-modal.css";
-import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
+import "./update-profile.css";
+import { useDispatch } from "react-redux";
 
-const user = {
-  username: "Youssef",
-  bio: "hello my name is youssef",
-};
 
-const UpdateProfileModal = ({ setUpdateProfile }) => {
-  const [username, setUsername] = useState(user.username);
-  const [bio, setBio] = useState(user.bio);
+const UpdateProfileModal = ({ setUpdateProfile, profile }) => {
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState(profile.username);
+  const [bio, setBio] = useState(profile.bio);
   const [password, setPassword] = useState("");
 
   // From Submit Handler
@@ -21,7 +18,8 @@ const UpdateProfileModal = ({ setUpdateProfile }) => {
       updatedUser.password = password;
     }
 
-    console.log(updatedUser);
+    dispatch(updateProfile(profile?._id, updatedUser));
+    setUpdateProfile(false);
   };
 
   return (
