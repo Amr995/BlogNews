@@ -4,7 +4,6 @@ import { posts } from "../../dummyData";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "../../redux/apiCalls/profileApiCall";
 import { useParams } from "react-router-dom";
 import swal from "sweetalert";
 import UpdateProfileModal from "./UpdateProfileModal";

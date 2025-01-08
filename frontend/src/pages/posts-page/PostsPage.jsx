@@ -17,14 +17,14 @@ const PostsPage = () => {
     const pages = Math.ceil(postsCount / POST_PER_PAGE);
 
     useEffect(() => {
-        dispatch(getPostsCount());
+        dispatch(fetchPosts(currentPage));
         window.scrollTo(0, 0);
     }, [currentPage]);
 
     useEffect(() => {
-        dispatch(fetchPosts(currentPage));
+        dispatch(getPostsCount());
         window.scrollTo(0, 0);
-    }, [currentPage]);
+    }, []);
 
     return (<>
         <section className="posts-page">

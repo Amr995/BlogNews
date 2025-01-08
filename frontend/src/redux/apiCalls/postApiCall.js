@@ -2,11 +2,11 @@ import { postActions } from "../slices/postSlice";
 import request from "../../utils/request";
 import { toast } from "react-toastify";
 
-// Fetch Posts Baased Page Number
+// Fetch Posts Baased On Page Number
 export function fetchPosts(pageNumber) {
     return async (dispatch) => {
         try {
-            const { data } = await request.get(`/api/posts?pageNumber/${pageNumber}`);
+            const { data } = await request.get(`/api/posts?pageNumber=${pageNumber}`);
             dispatch(postActions.setProfile(data));
         } catch (error) {
             toast.error(error.response.data.message);
@@ -14,12 +14,12 @@ export function fetchPosts(pageNumber) {
     }
 }
 
-// Get Posts count
-export function getPostsCount(pageNumber) {
+// Get Posts Count
+export function getPostsCount() {
     return async (dispatch) => {
         try {
             const { data } = await request.get(`/api/posts/count`);
-            dispatch(postActions.setProfile(data));
+            dispatch(postActions.setPostsCount(data));
         } catch (error) {
             toast.error(error.response.data.message);
         }
@@ -56,4 +56,32 @@ export function createPost(newPost) {
             dispatch(postActions.clearLoading());
         }
     }
+}
+
+// Fetch Single Post
+export function fetchSinglePost(postId) {
+    return async (dispatch) => {
+        try {
+            const { data } = await request.get(`/api/posts/${postId}`);
+            dispatch(postActions.setPost(data));
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+}
+
+// Toggle Like Post
+export function toggleLikePost(postId) {
+    return async (dispatch, getState) => {
+        try {
+            const { data } = await request.put(`/api/posts/like/${postId}`, {}, {
+                headers: {
+                    Authorization: "Bearer " + getState().auth.user.token,
+                }
+            } );
+            dispatch(postActions.setLike(data));
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    };
 }

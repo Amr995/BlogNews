@@ -1,9 +1,13 @@
-import { useState } from "react";
 import "./comment-list.css";
-import UpdateCommentModal from "./UpdateCommentModal";
 import swal from "sweetalert";
+import { useState } from "react";
+import UpdateCommentModal from "./UpdateCommentModal";
+import Moment from "react-moment";
+import { useDispatch, useSelector } from "react-redux";
 
-const CommentList = () => {
+const CommentList = ({ comments }) => {
+  const { user } = useSelector(state => state.auth);
+
   const [updateComment, setUpdateComment] = useState(false);
 
   // Delete Comment Handler
@@ -27,28 +31,34 @@ const CommentList = () => {
 
   return (
     <div className="comment-list">
-      <h4 className="comment-list-count">2 Comments</h4>
-      {[1, 2].map((comment) => (
-        <div key={comment} className="comment-item">
+      <h4 className="comment-list-count">{comments?.length} Comments</h4>
+      {comments?.map((comment) => (
+        <div key={comment._id} className="comment-item">
           <div className="comment-item-info">
-            <div className="comment-item-user-info">
-              <img
-                src="/images/user-avatar.png"
-                alt=""
-                className="comment-item-user-photo"
-              />
-              <span className="comment-item-username">Youssef Abbas</span>
+            <div className="comment-item-username">
+              {comment.username}
             </div>
-            <div className="comment-item-time">4 hours ago</div>
+            <div className="comment-item-time">
+              <Moment fromNow ago>
+                {comment.createdAt}
+              </Moment>{" "}
+              ago
+              </div>
           </div>
-          <p className="comment-item-text">this is so great</p>
-          <div className="comment-item-icon-wrapper">
-            <i
-              onClick={() => setUpdateComment(true)}
-              className="bi bi-pencil-square"
-            ></i>
-            <i onClick={deleteCommentHandler} className="bi bi-trash-fill"></i>
-          </div>
+          <p className="comment-item-text">
+            {comment.text}
+          </p>
+          {
+            user?._id === comment.user && (
+              <div className="comment-item-icon-wrapper">
+              <i
+                onClick={() => setUpdateComment(true)}
+                className="bi bi-pencil-square"
+              ></i>
+              <i onClick={deleteCommentHandler} className="bi bi-trash-fill"></i>
+            </div>
+            )
+          }
         </div>
       ))}
       {updateComment && (

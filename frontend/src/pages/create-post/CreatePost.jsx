@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createPost } from "../../redux/apiCalls/postApiCall";
-import {  } from "react-loader-spinner"
+import { RotatingLines } from "react-loader-spinner";
 
 const CreatePost = () => {
   const dispatch = useDispatch();
-  const { loading, isPostCreated } = useSelector(state => state.post); 
+  const { loading, isPostCreated } = useSelector((state) => state.post);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -20,7 +20,8 @@ const CreatePost = () => {
     e.preventDefault();
     if (title.trim() === "") return toast.error("Post Title is required");
     if (category.trim() === "") return toast.error("Post Category is required");
-    if (description.trim() === "") return toast.error("Post Description is required");
+    if (description.trim() === "")
+      return toast.error("Post Description is required");
     if (!file) return toast.error("Post Image is required");
 
     const formData = new FormData();
@@ -34,7 +35,7 @@ const CreatePost = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if(isPostCreated) {
+    if (isPostCreated) {
       navigate("/");
     }
   }, [isPostCreated, navigate]);
@@ -76,10 +77,17 @@ const CreatePost = () => {
           onChange={(e) => setFile(e.target.files[0])}
         />
         <button type="submit" className="create-post-btn">
-          {
-            loading ? "Loading..." : "Create"
-          }
-          Create
+          {loading ? (
+            <RotatingLines
+              strokeColor="white"
+              stokeWidth="5"
+              animationDuration="0.75"
+              width="40"
+              visible={true}
+            />
+          ) : (
+            "Create"
+          )}
         </button>
       </form>
     </section>

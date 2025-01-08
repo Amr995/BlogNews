@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Category = () => {
   const dispatch = useDispatch();
-  const { postsCategory } = useSelector(state => state.post);
+  const { postsCate } = useSelector(state => state.post);
 
   const { category } = useParams();
 
@@ -30,11 +30,11 @@ const Category = () => {
           :
           <>
             <h1 className="category-title">{category}</h1>
-            <PostList posts={postsCategory} />
+            <PostList posts={postsCate} />
           </>
       }
-
-    </section>);
+    </section>
+    );
 }
 
 export default Category;
