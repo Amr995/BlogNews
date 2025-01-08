@@ -66,7 +66,7 @@ module.exports.updateUserProfileCtrl = asyncHandler(async (req, res) => {
       },
     },
     { new: true }
-  ).select("-password");
+  ).select("-password").populate("post");
 
   res.status(200).json(updatedUser);
 });
