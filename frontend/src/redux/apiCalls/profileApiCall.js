@@ -29,6 +29,7 @@ export function uploadProfilePhoto(newPhoto) {
           },
         }
       );
+
       dispatch(profileActions.setProfilePhoto(data.profilePhoto));
       dispatch(authActions.setUserPhoto(data.profilePhoto));
       toast.success(data.message);
@@ -66,6 +67,29 @@ export function updateProfile(userId, profile) {
       localStorage.setItem("userInfo", JSON.stringify(user));
     } catch (error) {
       toast.error(error.response.data.message);
+    }
+  };
+}
+
+// Delete Profile (Account)
+export function deleteProfile(userId) {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(profileActions.setLoading());
+      const { data } = await request.delete(
+        `/api/users/profile/${userId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + getItem().auth.user.token,
+          },
+        }
+      );
+      dispatch(profileActions.setIsProfileDeleted());
+      toast.success(data?.message);
+      setTimeout(() => dispatch(profileActions.clearIsProfileDeleted()), 2000);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      dispatch(profileActions.clearLoading());
     }
   };
 }

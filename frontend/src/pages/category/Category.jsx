@@ -3,6 +3,7 @@ import "./category.css";
 import PostList from "../../components/posts/PostList";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchPostsBasedOnCategory } from "../../redux/apiCalls/postApiCall";
 
 const Category = () => {
   const dispatch = useDispatch();

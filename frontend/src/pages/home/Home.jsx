@@ -1,11 +1,11 @@
 import PostList from "../../components/posts/PostList";
 import "./home.css";
-import { categories } from "../../dummyData"
 import Sidebar from "../../components/sidebar/Sidebar";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchPosts } from "../../redux/apiCalls/postApiCall";
+// import { cate };
 
 
 const Home = () => {

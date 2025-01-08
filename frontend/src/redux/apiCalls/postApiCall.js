@@ -119,7 +119,6 @@ export function updatePost(newPost, postId) {
     };
 }
 
-
 // Delete Post
 export function deletePost(postId) {
     return async (dispatch, getState) => {
