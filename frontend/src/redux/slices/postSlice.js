@@ -38,6 +38,9 @@ const postSlice = createSlice({
         },
         setLike(state, action) {
             state.post.likes = action.payload.likes;
+        },
+        deletePost(state,action){
+            state.posts = state.posts.filter(p => p._id !== action.payload);
         }
     },
 });

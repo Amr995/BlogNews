@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "./post-details.css";
 import { toast } from "react-toastify";
 import AddComment from "../../components/comments/AddComment";
@@ -7,7 +7,7 @@ import CommentList from "../../components/comments/CommentList";
 import swal from "sweetalert";
 import UpdatePostModal from "./UpdatePostModal";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSinglePost, toggleLikePost } from "../../redux/apiCalls/postApiCall";
+import { deletePost, fetchSinglePost, toggleLikePost, updatePostImage } from "../../redux/apiCalls/postApiCall";
 
 const PostDetails = () => {
   const dispatch = useDispatch();
@@ -30,8 +30,12 @@ const PostDetails = () => {
     e.preventDefault();
     if(!file) return toast.warning("there is no file!");
 
-    console.log("image uploaded successfully")
+    const formData = new FormData();
+    formData.appent("image", file);
+    dispatch(updatePostImage(formData,post?._id));
   }
+
+  const navigate = useNavigate()
 
   // Delete Post Handler
   const deletePostHandler = () => {
@@ -41,13 +45,10 @@ const PostDetails = () => {
       icon: "warning",
       buttons: true,
       dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("post has been deleted!", {
-          icon: "success",
-        });
-      } else {
-        swal("Something went wrong!");
+    }).then((isOk) => {
+      if (isOk) {
+        dispatch(deletePost(post?._id));
+        navigate(`/profile/${user?._id}`);
       }
     });
   };

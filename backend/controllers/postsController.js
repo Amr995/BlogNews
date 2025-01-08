@@ -1,11 +1,11 @@
 const fs = require("fs");
 const path = require("path");
-const asynHandler = require("express-async-handler");
+const asyncHandler = require("express-async-handler");
 const {
   Post,
   validateCreatePost,
   validateUpdatePost,
-} = require("../models/User");
+} = require("../models/Post");
 const {
   cloudinaryUploadImage,
   cloudinaryRemoveImage,
@@ -18,7 +18,7 @@ const { Comment } = require("../models/Comment");
  * @method Post
  * @access private (only loged in user)
  ______________________________________________________*/
-module.exports.createPostCtrl = asynHandler(async (req, res) => {
+module.exports.createPostCtrl = asyncHandler(async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "no image provided" });
   }
@@ -53,7 +53,7 @@ module.exports.createPostCtrl = asynHandler(async (req, res) => {
  * @method GET
  * @access public
  ______________________________________________________*/
-module.exports.getAllPostsCtrl = asynHandler(async (req, res) => {
+module.exports.getAllPostsCtrl = asyncHandler(async (req, res) => {
   const POST_PER_PAGE = 3;
   const { pageNumber, category } = req.query;
   let posts;
@@ -83,7 +83,7 @@ module.exports.getAllPostsCtrl = asynHandler(async (req, res) => {
  * @method GET
  * @access public
  ______________________________________________________*/
-module.exports.getSinglePostCtrl = asynHandler(async (req, res) => {
+module.exports.getSinglePostCtrl = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
     .populate("user", ["-password"])
     .populate("comments");
@@ -100,7 +100,7 @@ module.exports.getSinglePostCtrl = asynHandler(async (req, res) => {
  * @method GET
  * @access private (only admin or owner of the post)
  ______________________________________________________*/
-module.exports.getPostCountCtrl = asynHandler(async (req, res) => {
+module.exports.getPostCountCtrl = asyncHandler(async (req, res) => {
   const post = await Post.count();
   res.status(200).json(count);
 });
@@ -111,7 +111,7 @@ module.exports.getPostCountCtrl = asynHandler(async (req, res) => {
  * @method DELETE
  * @access private (only admin or owner of the post)
  ______________________________________________________*/
-module.exports.deletePostCtrl = asynHandler(async (req, res) => {
+module.exports.deletePostCtrl = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id);
 
   if (!post) {
@@ -138,7 +138,7 @@ module.exports.deletePostCtrl = asynHandler(async (req, res) => {
  * @method PUT
  * @access private (only owner of the post)
  ______________________________________________________*/
-module.exports.updatePostCtrl = asynHandler(async (req, res) => {
+module.exports.updatePostCtrl = asyncHandler(async (req, res) => {
   const { error } = validateUpdatePost(req.body);
 
   if (error) {
@@ -177,7 +177,7 @@ module.exports.updatePostCtrl = asynHandler(async (req, res) => {
  * @method PUT
  * @access private (only owner of the post)
  ______________________________________________________*/
-module.exports.updatePostImageCtrl = asynHandler(async (req, res) => {
+module.exports.updatePostImageCtrl = asyncHandler(async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "no image provided" });
   }
@@ -222,7 +222,7 @@ module.exports.updatePostImageCtrl = asynHandler(async (req, res) => {
  * @method PUT
  * @access private (only logged in user)
  ______________________________________________________*/
-module.exports.toggleLikeCtrl = asynHandler(async (req, res) => {
+module.exports.toggleLikeCtrl = asyncHandler(async (req, res) => {
   const loggedInUser = req.user.id;
   const { id: postId } = req.params;
 
