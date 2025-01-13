@@ -34,3 +34,16 @@ export function registerUser(user) {
         }
     }
 }
+
+// Verify Email
+export function verifyEmail(userId, token) {
+    return async (dispatch) => {
+        try {
+            await request.post(`/api/auth/${userId}/verify/${token}`);
+            dispatch(authActions.setIsEmailVerified());
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+

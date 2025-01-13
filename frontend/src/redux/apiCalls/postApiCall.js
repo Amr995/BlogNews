@@ -135,3 +135,15 @@ export function deletePost(postId) {
         }
     };
 }
+
+// Get All Posts
+export function getAllPosts(pageNumber) {
+    return async (dispatch) => {
+        try {
+            const { data } = await request.get(`/api/posts`);
+            dispatch(postActions.setPosts(data));
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    }
+}

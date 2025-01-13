@@ -9,14 +9,11 @@ const CategorySchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    text: {
+    title: {
       type: String,
       required: true,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
+      trim: true,
+    }
   },
   {
     timestamps: true,
@@ -28,13 +25,13 @@ const Category = mongoose.model("Category", CategorySchema);
 
 // Validate Create Category
 function validateCreateCategory(obj) {
-    const schema = Joi.object({
-        title: Joi.string().trim().required().label("Title"),
-    });
-    return schema.validate(obj);
+  const schema = Joi.object({
+    title: Joi.string().trim().required().label("Title"),
+  });
+  return schema.validate(obj);
 }
 
 module.exports = {
-    Category,
-    validateCreateCategory,
-}
+  Category,
+  validateCreateCategory,
+};
