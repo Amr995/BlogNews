@@ -2,7 +2,7 @@ const router = require("express").Router();
 const {
   sendResetPasswordLinkCtrl,
   getResetPasswordLinkCtrl,
-  resetPasswordCtrl
+  resetPasswordLinkCtrl
 } = require("../controllers/passwordController");
 
 // /api/password/reser-password-link
@@ -12,6 +12,6 @@ router.post("/reset-password-link", sendResetPasswordLinkCtrl);
 router
   .route("/reser-password/:userId/:token")
   .get(getResetPasswordLinkCtrl)
-  .post(resetPasswordCtrl);
+  .post(resetPasswordLinkCtrl);
 
 module.exports = router;
