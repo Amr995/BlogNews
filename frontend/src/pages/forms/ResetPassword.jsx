@@ -1,9 +1,9 @@
 import "./form.css";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { resetPassword } from "../../redux/apiCalls/passwordApiCall";
+import { getResetPassword, resetPassword } from "../../redux/apiCalls/passwordApiCall";
 
 const ResetPassword = () => {
   const dispatch = useDispatch();

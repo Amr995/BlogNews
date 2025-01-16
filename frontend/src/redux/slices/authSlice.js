@@ -29,7 +29,6 @@ const authSlice = createSlice({
             state.isEmailVerified = true,
             state.registerMessage = null;
         }
-
     }
 });
 

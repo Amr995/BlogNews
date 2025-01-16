@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchPosts } from "../../redux/apiCalls/postApiCall";
-// import { cate };
+
 
 
 const Home = () => {
     const dispatch = useDispatch();
     const { posts } = useSelector(state => state.post);
+    const { categories } = useSelector(state => state.categories);
 
     useEffect(() => {
         dispatch(fetchPosts(1));
