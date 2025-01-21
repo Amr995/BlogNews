@@ -31,7 +31,7 @@ export function fetchPostsBasedOnCategory(category) {
     return async (dispatch) => {
         try {
             const { data } = await request.get(`/api/posts?category/${category}`);
-            dispatch(postActions.setPostsCate(data));
+            dispatch(postActions.setPostCate(data));
         } catch (error) {
             toast.error(error.response.data.message);
         }

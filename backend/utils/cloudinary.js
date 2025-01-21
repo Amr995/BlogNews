@@ -1,6 +1,6 @@
-const cloudnary = require("cloudinary");
+const cloudinary = require("cloudinary");
 
-cloudnary.config({
+cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
@@ -33,7 +33,7 @@ const cloudinaryRemoveImage = async (imagePublicId) => {
 // Cloudnary Remove Multiple Image
 const cloudinaryRemoveMultipleImage = async (publicIds) => {
   try {
-    const result = await cloudnary.v2.api.delete_resources(publicIds);
+    const result = await cloudinary.v2.api.delete_resources(publicIds);
     return result;
   } catch (error) {
     console.log(error);

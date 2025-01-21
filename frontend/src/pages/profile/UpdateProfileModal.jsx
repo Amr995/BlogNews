@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./update-profile.css";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
 import {updateProfile} from "../../redux/apiCalls/profileApiCall";
 

@@ -17,8 +17,8 @@ const PostDetails = () => {
 
   const { id } = useParams();
 
-  const [updatePost, setUpdatePost] = useState(false);
   const [file, setFile] = useState(null);
+  const [updatePost, setUpdatePost] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -31,11 +31,11 @@ const PostDetails = () => {
     if(!file) return toast.warning("there is no file!");
 
     const formData = new FormData();
-    formData.appent("image", file);
+    formData.append("image", file);
     dispatch(updatePostImage(formData,post?._id));
   }
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Delete Post Handler
   const deletePostHandler = () => {

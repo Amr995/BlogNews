@@ -9,6 +9,9 @@ const passwordSlice = createSlice({
     setError(state) {
       state.isError = true;
     },
+    clearError(state) {
+      state.isError = false;
+    },
   },
 });
 

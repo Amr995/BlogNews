@@ -41,10 +41,10 @@ await sendEmail(user.email,"Reset Password",htmlTemplate);
 res.status(200).json({
     message: "Password reset link send to your email, Please check your inbox"
 })
-})
+});
 
 /**______________________________________________________
- * @desc Send Reset Password Link
+ * @desc Get Reset Password Link
  * @route /api/password/reset-password/:userId/:token
  * @method GET
  * @access public
@@ -72,7 +72,7 @@ res.status(200).json({
  * @method POST
  * @access public
  ______________________________________________________*/
- module.exports.resetPasswordLinkCtrl = asyncHandler(async (req,res) => {
+ module.exports.resetPasswordCtrl = asyncHandler(async (req,res) => {
     const {error} = validateNewPassword(req.body);
     if(error) {
         return res.status(400).json({ message: error.details[0].message });
@@ -86,7 +86,7 @@ res.status(200).json({
     const verificationToken = await VerificationToken.findOne({
         userId: user._id,
         token: req.params.token,
-    })
+    });
     if(!verificationToken) {
         return res.status(400).json({ message: "invalid link" });
     }
@@ -103,4 +103,4 @@ res.status(200).json({
     await verificationToken.remove();
 
     res.status(200).json({ message: "Password reset successfully, please log in" });
- })
+ });

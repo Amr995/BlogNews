@@ -56,7 +56,7 @@ export function deleteComment(commentId) {
 export function fetchAllComments() {
     return async (dispatch, getState) => {
         try {
-            const {data} = await request.delete(`/api/comments`, {
+            const {data} = await request.get(`/api/comments`, {
                headers: {
                 Authorization: "Bearer " + getState().auth.user.token,
                } 

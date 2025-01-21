@@ -15,7 +15,6 @@ const sendEmail = require("../utils/sendEmail");
  * @method POST
  * @access public
  ______________________________________________________*/
-
 module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
   const { error } = validateRegisterUser(req.body);
   if (error) {
@@ -67,7 +66,6 @@ module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
  * @method POST
  * @access public
  ______________________________________________________*/
-
 module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
   const { error } = validateLoginUser(req.body);
   if (error) {
@@ -109,7 +107,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
     await sendEmail(user.email, "Verify Your Email", htmlTemplate);
 
     return res
-      .status(404)
+      .status(400)
       .json({
         message: "We sent to you an email, please verify your email address",
       });
@@ -127,7 +125,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
 /**______________________________________________________
  * @desc Verify User Account
- * @route /api/auth/:userId/virfify/:token
+ * @route /api/auth/:userId/verify/:token
  * @method GET
  * @access public
  ______________________________________________________*/

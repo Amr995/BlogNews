@@ -10,8 +10,8 @@ import { fetchCategories } from "../../redux/apiCalls/categoryApiCall";
 const CreatePost = () => {
   const dispatch = useDispatch();
   const { loading, isPostCreated } = useSelector((state) => state.post);
-  const { categories } = useSelector(state => state.category);
-  
+  const { categories } = useSelector((state) => state.category);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -42,9 +42,9 @@ const CreatePost = () => {
     }
   }, [isPostCreated, navigate]);
 
-useEffect(() => {
-dispatch(fetchCategories());
-}, [])
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
 
   return (
     <section className="create-post">
@@ -65,13 +65,11 @@ dispatch(fetchCategories());
           <option disabled value="">
             Select A Category
           </option>
-          <option value="music">music</option>
-          <option value="travelling">travelling</option>
-          {categories.map(category => 
+          {categories.map((category) => (
             <option key={category._id} value={category.title}>
               {category.title}
             </option>
-          )}
+          ))}
         </select>
         <textarea
           className="create-post-textarea"

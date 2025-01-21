@@ -7,12 +7,10 @@ import { useEffect } from "react";
 import { fetchPosts } from "../../redux/apiCalls/postApiCall";
 
 
-
 const Home = () => {
     const dispatch = useDispatch();
     const { posts } = useSelector(state => state.post);
-    const { categories } = useSelector(state => state.categories);
-
+    
     useEffect(() => {
         dispatch(fetchPosts(1));
     }, []);
@@ -27,7 +25,7 @@ const Home = () => {
             <div className="home-latest-post">Latest Posts</div>
             <div className="home-container">
                 <PostList posts={posts} />
-                <Sidebar categories={categories} />
+                <Sidebar/>
             </div>
             <div className="home-see-posts-link">
                 <Link to="/posts" className="home-link">

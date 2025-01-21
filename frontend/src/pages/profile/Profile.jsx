@@ -116,7 +116,6 @@ const Profile = () => {
         <h1 className="profile-username">{profile?.username}</h1>
         <p className="profile-bio">
           {profile?.bio}
-          hello my name is Youssef I am a web developer
         </p>
         <div className="user-date-joined">
           <strong>Date Joined: </strong>

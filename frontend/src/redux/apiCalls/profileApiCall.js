@@ -54,7 +54,7 @@ export function updateProfile(userId, profile) {
         profile,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: "Bearer " + getState().auth.user.token,
           },
         }
       );

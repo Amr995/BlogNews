@@ -18,7 +18,7 @@ const VerificationTokenSchema = new mongoose.Schema(
   }
 );
 
-// Category Model
+// Verification Token Model
 const VerificationToken = mongoose.model("VerificationToken", VerificationTokenSchema);
 
 module.exports = VerificationToken;

@@ -40,13 +40,13 @@ const postSlice = createSlice({
             state.post.likes = action.payload.likes;
         },
         deletePost(state,action){
-            state.posts = state.posts.filter(p => p._id !== action.payload);
+            state.post = state.post.filter(p => p._id !== action.payload);
         },
         addCommentToPost(state, action) {
             state.post.comments.push(action.payload);
         },
         updateCommentPost(state, action){
-            state.poat.comments = state.post.comments.map(comment =>
+            state.post.comments = state.post.comments.map(comment =>
                comment._id === action.payload._id ? action.payload : comment
             )
         },

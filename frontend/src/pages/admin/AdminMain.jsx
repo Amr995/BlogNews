@@ -9,10 +9,10 @@ import { fetchAllComments } from "../../redux/apiCalls/commentApiCall";
 
 const AdminMain = () => {
   const dispatch = useDispatch();
-  const { cateogries } = useSelector((state) => state.category);
+  const { categories } = useSelector((state) => state.category);
   const { usersCount } = useSelector((state) => state.profile);
   const { postsCount } = useSelector((state) => state.post);
-  const { comments } = useSelector(state => state.comments);
+  const { comments } = useSelector(state => state.comment);
 
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const AdminMain = () => {
         </div>
         <div className="admin-main-card">
           <h5 className="admin-card-title">Categories</h5>
-          <div className="admin-card-count">{cateogries.length}</div>
+          <div className="admin-card-count">{categories.length}</div>
           <div className="admin-card-link-wrapper">
             <Link
               to="/admin-dashboard/categories-table"

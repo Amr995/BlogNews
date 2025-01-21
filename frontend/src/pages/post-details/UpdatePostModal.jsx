@@ -9,7 +9,6 @@ const UpdatePostModal = ({ setUpdatePost, post }) => {
   const dispatch = useDispatch();
   const { categories } = useSelector(state => state.category);
   
-
   const [title, setTitle] = useState(post.title);
   const [description, setDescription] = useState(post.description);
   const [category, setCategory] = useState(post.category);
