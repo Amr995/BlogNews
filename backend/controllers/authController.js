@@ -56,7 +56,7 @@ module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
   res
     .status(201)
     .json({
-      message: "We sent to you an email, pleade verify your email address",
+      message: "We sent to you an email, please verify your email address",
     });
 });
 
