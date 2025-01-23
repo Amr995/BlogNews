@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema(
     isAccountVerified: {
       type: Boolean,
       default: false,
-    },
+    }
   },
   {
     timestamps: true,

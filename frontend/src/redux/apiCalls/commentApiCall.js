@@ -23,7 +23,7 @@ export function createComment(newComment) {
 export function updateComment(commentId, comment) {
     return async (dispatch, getState) => {
         try {
-            const { data }  = await request.put(`/api/comments${commentId}`, comment, {
+            const { data }  = await request.put(`/api/comments/${commentId}`, comment, {
                headers: {
                 Authorization: "Bearer " + getState().auth.user.token,
                } 
@@ -39,7 +39,7 @@ export function updateComment(commentId, comment) {
 export function deleteComment(commentId) {
     return async (dispatch, getState) => {
         try {
-            await request.delete(`/api/comments${commentId}`, {
+            await request.delete(`/api/comments/${commentId}`, {
                headers: {
                 Authorization: "Bearer " + getState().auth.user.token,
                } 

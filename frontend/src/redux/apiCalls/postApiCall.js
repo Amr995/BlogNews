@@ -9,7 +9,7 @@ export function fetchPosts(pageNumber) {
             const { data } = await request.get(`/api/posts?pageNumber=${pageNumber}`);
             dispatch(postActions.setProfile(data));
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message);
         }
     }
 }

@@ -11,7 +11,7 @@ const CommentList = ({ comments }) => {
   const { user } = useSelector(state => state.auth);
 
   const [updateComment, setUpdateComment] = useState(false);
-  const [updateForUpdate, setCommentForUpdate] = useState(null);
+  const [commentForUpdate, setCommentForUpdate] = useState(null);
 
   // Update Comment Handler
   const updateCommentHandler = (comment) =>  {
@@ -62,7 +62,8 @@ const CommentList = ({ comments }) => {
               ></i>
               <i
                onClick={() => deleteCommentHandler(comment?._id)}
-               className="bi bi-trash-fill"></i>
+               className="bi bi-trash-fill"
+              ></i>
             </div>
             )
           }
@@ -70,7 +71,7 @@ const CommentList = ({ comments }) => {
       ))}
       {updateComment && (
         <UpdateCommentModal
-         commentForUpdate={setCommentForUpdate}
+         commentForUpdate={commentForUpdate}
          setUpdateComment={setUpdateComment}
         />
       )}

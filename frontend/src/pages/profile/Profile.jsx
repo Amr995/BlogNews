@@ -142,7 +142,8 @@ const Profile = () => {
           />
         ))}
       </div>
-      {user?._id === profile?._id && (
+      {
+      user?._id === profile?._id && (
         <button onClick={deleteAccountHandler} className="delete-account-btn">
           Delete Your Account
         </button>

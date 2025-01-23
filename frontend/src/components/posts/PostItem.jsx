@@ -16,7 +16,7 @@ const PostItem = ({ post, username, userId }) => {
                         <Link
                         className="post-item-username"
                         to={profileLink}>
-                            {username? username: post?.user.username}
+                            {username ? username : post?.user.username}
                         </Link>
                     </div>
                     <div className="post-item-date">
