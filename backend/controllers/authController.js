@@ -34,7 +34,6 @@ module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
     email: req.body.email,
     password: hashedPassword,
   });
-
   await user.save();
 
   const verificationToken = new VerificationToken({
@@ -89,6 +88,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
     let verificationToken = await VerificationToken.findOne({
       userId: user._id,
     });
+    
     if (!verificationToken) {
       verificationToken = new VerificationToken({
         userId: user._id,

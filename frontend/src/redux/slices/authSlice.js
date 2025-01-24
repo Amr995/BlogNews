@@ -26,7 +26,7 @@ const authSlice = createSlice({
             state.user.username = action.payload;
         },
         setIsEmailVerified(state) {
-            state.isEmailVerified = true,
+            state.isEmailVerified = true;
             state.registerMessage = null;
         }
     }
